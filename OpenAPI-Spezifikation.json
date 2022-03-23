@@ -1,0 +1,396 @@
+{
+    "swagger": "2.0",
+    "info": {
+      "description": "This is a specification for to-do lists.",
+      "version": "1.0.0",
+      "title": "Sedad's To-do Lists",
+      "termsOfService": "http://Sedad.de/terms/",
+      "contact": {
+        "email": "to-do-lists@sedad.de"
+      },
+      "license": {
+        "name": "Apache 2.0",
+        "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+      }
+    },
+    "host": "to-do-lists.Sedad.de",
+    "basePath": "/v2",
+    "tags": [
+      {
+        "name": "pet",
+        "description": "Everything about your Pets"
+      },
+      {
+        "name": "store",
+        "description": "Access to Petstore orders"
+      },
+      {
+        "name": "user",
+        "description": "Operations about user"
+      }
+    ],
+    "schemes": [
+      "https",
+      "http"
+    ],
+    "paths": {
+      "/todo-lists/{list_id}": {
+        "get": {
+          "tags": [
+            "todo-lists"
+          ],
+          "summary": "gets every entries of a to-do list.",
+          "produces": [
+            "application/json"
+          ],
+          "parameters": [
+            {
+              "name": "list_id",
+              "in": "path",
+              "description": "id of list to return",
+              "required": true,
+              "type": "string"
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "List Items returned",
+              "schema": {
+                "$ref": "#/definitions/TodoEntry"
+              }
+            },
+            "404": {
+              "description": "invalid List ID"
+            }
+          }
+        },
+        "delete": {
+          "tags": [
+            "todo-lists"
+          ],
+          "summary": "deletes a to-do list with all it's entries.",
+          "produces": [
+            "application/json"
+          ],
+          "parameters": [
+            {
+              "name": "list_id",
+              "in": "path",
+              "description": "ID of the Todo-List that needs to be deleted",
+              "required": true,
+              "type": "string"
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "List deleted"
+            },
+            "404": {
+              "description": "List not found"
+            }
+          }
+        }
+      },
+      "/todo-lists/": {
+        "post": {
+          "tags": [
+            "todo-lists"
+          ],
+          "summary": "adds a new to-do list",
+          "produces": [
+            "application/json"
+          ],
+          "consumes": [
+            "application/json"
+          ],
+          "parameters": [
+            {
+              "in": "body",
+              "name": "body",
+              "description": "adding new to-do list",
+              "required": true,
+              "schema": {
+                "$ref": "#/definitions/todo-list"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "List added",
+              "schema": {
+                "$ref": "#/definitions/todo-list"
+              }
+            },
+            "500": {
+              "description": "List could not be added"
+            }
+          }
+        }
+      },
+      "/todo-lists/{list_id}/entry/": {
+        "post": {
+          "tags": [
+            "todo-lists"
+          ],
+          "summary": "adds a new entry to a to-do list.",
+          "consumes": [
+            "application/json"
+          ],
+          "produces": [
+            "application/json"
+          ],
+          "parameters": [
+            {
+              "in": "path",
+              "name": "list_id",
+              "type": "string",
+              "description": "entry placed in the to-do list",
+              "required": true
+            },
+            {
+              "in": "body",
+              "name": "body",
+              "schema": {
+                "$ref": "#/definitions/TodoEntry"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Entry successfully placed",
+              "schema": {
+                "$ref": "#/definitions/TodoEntry"
+              }
+            }
+          }
+        }
+      },
+      "/todo-lists/{list_id}/entry/{entry_id}": {
+        "put": {
+          "tags": [
+            "todo-lists"
+          ],
+          "summary": "refreshes a list entry.",
+          "produces": [
+            "application/json"
+          ],
+          "consumes": [
+            "application/json"
+          ],
+          "parameters": [
+            {
+              "in": "path",
+              "type": "string",
+              "name": "entry_id",
+              "description": "old entry renewed in the to-do list",
+              "required": true
+            },
+            {
+              "in": "path",
+              "type": "string",
+              "name": "list_id",
+              "description": "",
+              "required": true
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Entry successfully renewed",
+              "schema": {
+                "$ref": "#/definitions/TodoEntry"
+              }
+            }
+          }
+        },
+        "delete": {
+          "tags": [
+            "todo-lists"
+          ],
+          "summary": "deletes a single entry of a to-do list.",
+          "parameters": [
+            {
+              "name": "entry_id",
+              "in": "path",
+              "description": "ID of the Entry that needs to be deleted",
+              "required": true,
+              "type": "string"
+            },
+            {
+              "name": "list_id",
+              "in": "path",
+              "description": "ID of the list",
+              "type": "string",
+              "required": true
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Entry successfully deleted"
+            },
+            "404": {
+              "description": "Entry not found"
+            }
+          }
+        }
+      },
+      "/user": {
+        "get": {
+          "tags": [
+            "todo-lists"
+          ],
+          "summary": "gets a list of all user.",
+          "produces": [
+            "application/json"
+          ],
+          "parameters": [],
+          "responses": {
+            "200": {
+              "description": "All Useres shown",
+              "schema": {
+                "$ref": "#/definitions/User"
+              }
+            }
+          }
+        },
+        "post": {
+          "tags": [
+            "todo-lists"
+          ],
+          "summary": "adds a new user.",
+          "consumes": [
+            "application/json"
+          ],
+          "produces": [
+            "application/json"
+          ],
+          "parameters": [
+            {
+              "in": "body",
+              "name": "body",
+              "description": "Created user object",
+              "required": true,
+              "schema": {
+                "$ref": "#/definitions/User"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "User successfully created",
+              "schema": {
+                "$ref": "#/definitions/User"
+              }
+            }
+          }
+        }
+      },
+      "/user/{user_id}": {
+        "delete": {
+          "tags": [
+            "todo-lists"
+          ],
+          "summary": "deletes a user.",
+          "produces": [
+            "application/json"
+          ],
+          "consumes": [
+            "application/json"
+          ],
+          "parameters": [
+            {
+              "name": "user_id",
+              "in": "path",
+              "description": "The user that needs to be deleted",
+              "required": true,
+              "type": "string"
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "User successfully deleted"
+            },
+            "404": {
+              "description": "User not found"
+            }
+          }
+        }
+      }
+    },
+    "securityDefinitions": {
+      "api_key": {
+        "type": "apiKey",
+        "name": "api_key",
+        "in": "header"
+      },
+      "petstore_auth": {
+        "type": "oauth2",
+        "authorizationUrl": "https://petstore.swagger.io/oauth/authorize",
+        "flow": "implicit",
+        "scopes": {
+          "read:pets": "read your pets",
+          "write:pets": "modify pets in your account"
+        }
+      }
+    },
+    "definitions": {
+      "ApiResponse": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "type": {
+            "type": "string"
+          },
+          "message": {
+            "type": "string"
+          }
+        }
+      },
+      "todo-list": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "uuid"
+          },
+          "name": {
+            "type": "string"
+          }
+        }
+      },
+      "TodoEntry": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "uuid"
+          },
+          "description": {
+            "type": "string"
+          },
+          "user_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "list_id": {
+            "type": "string",
+            "format": "uuid"
+          }
+        }
+      },
+      "User": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "name": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
